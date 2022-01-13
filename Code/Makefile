@@ -2,7 +2,7 @@
 CC=gcc
 CCFLAGS=-Wall -Wextra -g
 
-HEADERS= load_image.c select.c save_image.c bit_manipulation.c
+HEADERS= load_image.c select.c save_image.c bit_manipulation.c rotate_image.c miscelanious_utils.c
 
 build:
 	$(CC) $(CCFLAGS) main.c $(HEADERS) -o image_editor -ggdb3

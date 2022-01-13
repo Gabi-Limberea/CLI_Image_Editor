@@ -6,13 +6,6 @@
 
 #include "select.h"
 
-void swap_values(uint_fast8_t *a, uint_fast8_t *b)
-{
-	uint_fast8_t t = *a;
-	*a = *b;
-	*b = t;
-}
-
 void select_area(status *img_status, char **params, int count,
 				 image *img, selected_area *selected)
 {
@@ -21,23 +14,26 @@ void select_area(status *img_status, char **params, int count,
 		return;
 	}
 
-	if (count != PARAMETERS_MAX) {
+	if (count < PARAMETERS_MAX) {
 		printf(SELECT_ZONE_FAIL);
 		return;
 	}
 
 	for (int i = 0; i < count; i++) {
-		if (atol(params[i]) > img->width ||
-			atol(params[i]) > img->height || atol(params[i]) < 0) {
+		if (atoi(params[i]) > img->width ||
+			atoi(params[i]) > img->height || atoi(params[i]) < 0) {
 			printf(SELECT_ZONE_FAIL);
 			return;
 		}
 	}
 
-	selected->x1 = atol(params[0]);
-	selected->y1 = atol(params[1]);
-	selected->x2 = atol(params[2]);
-	selected->y2 = atol(params[3]);
+	selected->x1 = atoi(params[0]);
+	selected->y1 = atoi(params[1]);
+	selected->x2 = atoi(params[2]);
+	selected->y2 = atoi(params[3]);
+
+	printf(SELECT_ZONE_OK, selected->x1, selected->y1,
+		   selected->x2, selected->y2);
 
 	if (selected->x1 > selected->x2)
 		swap_values(&selected->x1, &selected->x2);
@@ -46,8 +42,6 @@ void select_area(status *img_status, char **params, int count,
 		swap_values(&selected->y1, &selected->y2);
 
 	img_status->selection = SELECTED;
-	printf(SELECT_ZONE_OK, selected->x1, selected->y1,
-		   selected->x2, selected->y2);
 }
 
 void select_all(status *img_status, image *img, selected_area *selected)

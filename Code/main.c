@@ -4,11 +4,7 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "outputs.h"
-#include "macros.h"
-#include "load_image.h"
-#include "select.h"
-#include "save_image.h"
+#include "main_headers.h"
 
 comm chk_command(char *input, char **params, int *count);
 
@@ -19,7 +15,7 @@ int main(void)
 	comm command = NOTHING;
 	status img_status = {NOT_LOADED, NOTHING_SELECTED};
 	image img = {0, 0, 0, DEFAULT, {NULL}, NO_TYPE};
-	selected_area selected;
+	selected_area selected = {0, 0, 0, 0};
 
 	while (command != EXIT) {
 		int count = 0;
@@ -44,6 +40,7 @@ int main(void)
 			break;
 
 		case ROTATE:
+			rotate(&img_status, params[0], &img, &selected);
 			break;
 
 		case CROP:
@@ -94,26 +91,26 @@ comm chk_command(char *input, char **params, int *count)
 		dummy = strtok(NULL, " ");
 	}
 
-	if (!strcmp(command, "LOAD"))
+	if (!strcmp(command, "LOAD") && *count != 0)
 		return LOAD;
 
-	if (!strcmp(command, "SELECT")) {
+	if (!strcmp(command, "SELECT") && *count != 0) {
 		if (!strcmp(params[0], "ALL"))
 			return SELECT_ALL;
 		else
 			return SELECT;
 	}
 
-	if (!strcmp(command, "ROTATE"))
+	if (!strcmp(command, "ROTATE") && *count != 0)
 		return ROTATE;
 
-	if (!strcmp(command, "CROP"))
+	if (!strcmp(command, "CROP") && *count == 0)
 		return CROP;
 
-	if (!strcmp(command, "APPLY"))
+	if (!strcmp(command, "APPLY") && *count != 0)
 		return APPLY;
 
-	if (!strcmp(command, "SAVE"))
+	if (!strcmp(command, "SAVE") && *count != 0)
 		return SAVE;
 
 	if (!strcmp(command, "EXIT"))

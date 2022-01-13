@@ -7,6 +7,7 @@
 #define ERROR -1
 #define SUCCESS 1
 #define SIZE sizeof(uint_fast8_t)
+#define DEFAULT_ANGLE 90
 
 typedef enum comm {
 	EXIT = -1, NOTHING, LOAD, SELECT, SELECT_ALL, ROTATE, CROP, APPLY, SAVE
@@ -42,5 +43,25 @@ typedef struct image {
 } image;
 
 typedef struct selected_area {
-	uint_fast8_t x1, y1, x2, y2;
+	int x1, y1, x2, y2;
 } selected_area;
+
+typedef enum effects {
+	INVALID_EFFECT = -1, EDGE, SHARPEN, BLUR, GAUSSIAN_BLUR
+} effects;
+
+static const double edge[DEFAULT][DEFAULT] = {{-1, -1, -1},
+											  {-1, 8, -1},
+											  {-1, -1, -1}};
+
+static const double sharpen[DEFAULT][DEFAULT] = {{0, -1, 0},
+												 {-1, 5, -1},
+												 {0, -1, 0}};
+
+static const double blur[DEFAULT][DEFAULT] = {{1 / 9, 1 / 9, 1 / 9},
+											  {1 / 9, 1 / 9, 1 / 9},
+											  {1 / 9, 1 / 9, 1 / 9}};
+
+static const double gauss_blur[DEFAULT][DEFAULT] = {{1 / 16, 1 / 8, 1 / 16},
+													{1 / 8, 1 / 4, 1 / 8},
+													{1 / 16, 1 / 8, 1 / 16}};

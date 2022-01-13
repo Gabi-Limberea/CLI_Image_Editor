@@ -69,25 +69,25 @@ int save_binary(char *filename, image img)
 
 	for (int i = 0; i < img.height; i++) {
 		for (int j = 0; j < img.width; j++) {
-		switch (tmp_type) {
-		case P4:
-			if (j % 8 == 0) {
-				uint_fast8_t tmp;
-				set_bit_reversed(img.pixels.bw[i][j / 8], &tmp);
-				fwrite(&tmp, SIZE, 1, file);
-			}
-			break;
-		case P5:
-			fwrite(&img.pixels.gray[i][j], SIZE, 1, file);
-			break;
-		case P6:
-			fwrite(&img.pixels.red[i][j], SIZE, 1, file);
-			fwrite(&img.pixels.green[i][j], SIZE, 1, file);
-			fwrite(&img.pixels.blue[i][j], SIZE, 1, file);
-			break;
-		default:
-			return ERROR;
-			break;
+			switch (tmp_type) {
+			case P4:
+				if (j % 8 == 0) {
+					uint_fast8_t tmp;
+					set_bit_reversed(img.pixels.bw[i][j / 8], &tmp);
+					fwrite(&tmp, SIZE, 1, file);
+				}
+				break;
+			case P5:
+				fwrite(&img.pixels.gray[i][j], SIZE, 1, file);
+				break;
+			case P6:
+				fwrite(&img.pixels.red[i][j], SIZE, 1, file);
+				fwrite(&img.pixels.green[i][j], SIZE, 1, file);
+				fwrite(&img.pixels.blue[i][j], SIZE, 1, file);
+				break;
+			default:
+				return ERROR;
+				break;
 			}
 		}
 	}
