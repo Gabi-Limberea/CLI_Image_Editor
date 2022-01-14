@@ -36,10 +36,10 @@ void select_area(status *img_status, char **params, int count,
 		   selected->x2, selected->y2);
 
 	if (selected->x1 > selected->x2)
-		swap_values(&selected->x1, &selected->x2);
+		swap_int(&selected->x1, &selected->x2);
 
 	if (selected->y1 > selected->y2)
-		swap_values(&selected->y1, &selected->y2);
+		swap_int(&selected->y1, &selected->y2);
 
 	img_status->selection = SELECTED;
 }

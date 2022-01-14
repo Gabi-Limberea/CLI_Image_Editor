@@ -6,7 +6,7 @@
 
 #include "miscelanious_utils.h"
 
-uint_fast8_t **alloc_channel(int width, int height)
+uint_fast8_t **alloc(int width, int height)
 {
 	uint_fast8_t **matrix = calloc(height, sizeof(uint_fast8_t *));
 	if (!matrix) {
@@ -60,9 +60,16 @@ void reset(image *img, status *img_status)
 	img_status->selection = NOTHING_SELECTED;
 }
 
-void swap_values(int *a, int *b)
+void swap_int(int *a, int *b)
 {
-	int t = *a;
+	int tmp = *a;
 	*a = *b;
-	*b = t;
+	*b = tmp;
+}
+
+void swap(uint_fast8_t *a, uint_fast8_t *b)
+{
+	uint_fast8_t tmp = *a;
+	*a = *b;
+	*b = tmp;
 }

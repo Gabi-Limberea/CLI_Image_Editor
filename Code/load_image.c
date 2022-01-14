@@ -119,7 +119,7 @@ int read_channel_mono_ascii(FILE *file, image *img)
 {
 	switch (img->type) {
 	case P1:
-		img->pixels.bw = alloc_channel(img->width, img->height);
+		img->pixels.bw = alloc(img->width, img->height);
 		for (int i = 0; i < img->height; i++) {
 			for (int j = 0; j < img->width; j++) {
 				int tmp;
@@ -129,7 +129,7 @@ int read_channel_mono_ascii(FILE *file, image *img)
 		}
 		break;
 	case P2:
-		img->pixels.gray = alloc_channel(img->width, img->height);
+		img->pixels.gray = alloc(img->width, img->height);
 		for (int i = 0; i < img->height; i++) {
 			for (int j = 0; j < img->width; j++)
 				fscanf(file, "%hhu", &img->pixels.gray[i][j]);
@@ -144,9 +144,9 @@ int read_channel_mono_ascii(FILE *file, image *img)
 
 int read_channel_rgb_ascii(FILE *file, image *img)
 {
-	img->pixels.red = alloc_channel(img->width, img->height);
-	img->pixels.green = alloc_channel(img->width, img->height);
-	img->pixels.blue = alloc_channel(img->width, img->height);
+	img->pixels.red = alloc(img->width, img->height);
+	img->pixels.green = alloc(img->width, img->height);
+	img->pixels.blue = alloc(img->width, img->height);
 
 	if (!img->pixels.red || !img->pixels.green || !img->pixels.blue)
 		return ERROR;
@@ -197,7 +197,7 @@ int read_channel_mono_binary(FILE *file, image *img)
 {
 	switch (img->type) {
 	case P4:
-		img->pixels.bw = alloc_channel(img->width, img->height);
+		img->pixels.bw = alloc(img->width, img->height);
 		for (int i = 0; i < img->height; i++) {
 			for (int j = 0; j < img->width; j++) {
 				if (j % 8 == 0) {
@@ -209,7 +209,7 @@ int read_channel_mono_binary(FILE *file, image *img)
 		}
 		break;
 	case P5:
-		img->pixels.gray = alloc_channel(img->width, img->height);
+		img->pixels.gray = alloc(img->width, img->height);
 		for (int i = 0; i < img->height; i++) {
 			for (int j = 0; j < img->width; j++)
 				fread(&img->pixels.gray[i][j], SIZE, 1, file);
@@ -224,9 +224,9 @@ int read_channel_mono_binary(FILE *file, image *img)
 
 int read_channel_rgb_binary(FILE *file, image *img)
 {
-	img->pixels.red = alloc_channel(img->width, img->height);
-	img->pixels.green = alloc_channel(img->width, img->height);
-	img->pixels.blue = alloc_channel(img->width, img->height);
+	img->pixels.red = alloc(img->width, img->height);
+	img->pixels.green = alloc(img->width, img->height);
+	img->pixels.blue = alloc(img->width, img->height);
 
 	if (!img->pixels.red || !img->pixels.green || !img->pixels.blue)
 		return ERROR;

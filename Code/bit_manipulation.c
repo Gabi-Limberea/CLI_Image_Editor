@@ -12,7 +12,7 @@ void set_bit(int tmp, uint_fast8_t **bw, int i, int j)
 		bw[i][j / 8] = bw[i][j / 8] | (1 << (j % 8));
 }
 
-uint_fast8_t is_bit_set(uint_fast8_t **bw, int i, int j)
+int is_bit_set(uint_fast8_t **bw, int i, int j)
 {
 	return bw[i][j / 8] & (1 << (j % 8));
 }

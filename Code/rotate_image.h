@@ -8,11 +8,12 @@
 
 void rotate(status *img_status, char *angle, image *img,
 				selected_area *selected);
-int rotate_all(image *img, int angle_value);
-int rotate_select(image *img, int angle_value, selected_area *selected);
-int exec_rotation_select();
-int exec_rotation_select_bw();
-int exec_rotation_all(uint_fast8_t ***matrix, int angle_value,
+int rotate_all(image *img, int angle_val);
+int rotate_select(image *img, int angle_val, selected_area selected);
+int exe_rotation(uint_fast8_t ***matrix, int angle_val,
+				 selected_area selected);
+int exe_rotation_bw();
+int exe_rotation_all(uint_fast8_t ***matrix, int angle_val,
 					  int *width, int *height);
-int exec_rotation_all_bw(uint_fast8_t ***matrix, int angle_value,
+int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 					  int *width, int *height);

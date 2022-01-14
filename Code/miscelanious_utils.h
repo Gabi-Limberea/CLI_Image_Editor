@@ -5,6 +5,7 @@
 #include "outputs.h"
 
 void free_channel(uint_fast8_t **matrix, int height);
-uint_fast8_t **alloc_channel(int width, int height);
+uint_fast8_t **alloc(int width, int height);
 void reset(image *img, status *img_status);
-void swap_values(int *a, int *b);
+void swap_int(int *a, int *b);
+void swap(uint_fast8_t *a, uint_fast8_t *b);
