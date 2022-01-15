@@ -12,7 +12,8 @@ int rotate_all(image *img, int angle_val);
 int rotate_select(image *img, int angle_val, selected_area selected);
 int exe_rotation(uint_fast8_t ***matrix, int angle_val,
 				 selected_area selected);
-int exe_rotation_bw();
+int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
+							selected_area selected);
 int exe_rotation_all(uint_fast8_t ***matrix, int angle_val,
 					  int *width, int *height);
 int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,

@@ -9,7 +9,6 @@
 int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 							selected_area selected)
 {
-
 	int side = selected.x2 - selected.x1;
 	int rotations = angle_val / DEFAULT_ANGLE;
 
@@ -24,12 +23,15 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 
 			for (int i = 0; i < side; i++)
 				for (int j = 0; j < side; j++)
-					copy[i][j] = (*matrix)[i + selected.x1][j + selected.y1];
+					if (is_bit_set(*matrix, i + selected.x1, j + selected.y1))
+						set_bit(1, copy, i, j);
 
 			for (int i = selected.x1; i < selected.x2; i++)
-				for (int j = selected.y1; j < selected.y2; j++)
-					swap(&(*matrix)[i][j],
-						 &copy[selected.x2 - j - 1][i - selected.y1]);
+				for (int j = selected.y1; j < selected.y2; j++) {
+					reset_bit(*matrix, i, j);
+					if (is_bit_set(copy, selected.x2 - j - 1, i - selected.y1))
+						set_bit(1, *matrix, i, j);
+				}
 
 			rotations--;
 			free_channel(copy, side);
@@ -45,12 +47,15 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 
 			for (int i = 0; i < side; i++)
 				for (int j = 0; j < side; j++)
-					copy[i][j] = (*matrix)[i + selected.x1][j + selected.y1];
+					if (is_bit_set(*matrix, i + selected.x1, j + selected.y1))
+						set_bit(1, copy, i, j);
 
 			for (int i = selected.x1; i < selected.x2; i++)
-					for (int j = selected.y1; j < selected.y2; j++)
-						swap(&(*matrix)[i][j],
-							 &copy[j - selected.x1][selected.y2 - i - 1]);
+				for (int j = selected.y1; j < selected.y2; j++) {
+					reset_bit(*matrix, i, j);
+					if (is_bit_set(copy, j - selected.x1, selected.y2 - i - 1))
+						set_bit(1, *matrix, i, j);
+				}
 
 			rotations++;
 			free_channel(copy, side);

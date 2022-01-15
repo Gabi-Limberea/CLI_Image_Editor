@@ -24,3 +24,9 @@ void set_bit_reversed(uint_fast8_t tmp, uint_fast8_t *bw)
 		if (tmp & (1 << i))
 			*bw |= 1 << (8 *SIZE - i - 1);
 }
+
+void reset_bit (uint_fast8_t **bw, int i, int j)
+{
+	if (bw[i][j / 8] & (1 << (j % 8)))
+		bw[i][j / 8] = bw[i][j / 8] ^ (1 << (j % 8));
+}
