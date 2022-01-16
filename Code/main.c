@@ -21,7 +21,7 @@ int main(void)
 		int count = 0;
 
 		fgets(input, BUFSIZ, stdin);
-		while(!strcmp(input, "\n"))
+		while (!strcmp(input, "\n"))
 			fgets(input, BUFSIZ, stdin);
 
 		command = chk_command(input, params, &count);
@@ -44,9 +44,11 @@ int main(void)
 			break;
 
 		case CROP:
+			crop(&img, &selected, &img_status);
 			break;
 
 		case APPLY:
+			apply(&img, img_status, params[0], selected);
 			break;
 
 		case SAVE:

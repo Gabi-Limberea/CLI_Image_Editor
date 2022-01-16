@@ -7,7 +7,7 @@
 #include "rotate_image.h"
 
 int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
-							selected_area selected)
+					selected_area selected)
 {
 	int side = selected.x2 - selected.x1;
 	int rotations = angle_val / DEFAULT_ANGLE;
@@ -37,7 +37,7 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 			free_channel(copy, side);
 		}
 	} else {
-		while(rotations) {
+		while (rotations) {
 			uint_fast8_t **copy = alloc(side, side);
 
 			if (!copy) {
@@ -92,7 +92,7 @@ int exe_rotation(uint_fast8_t ***matrix, int angle_val, selected_area selected)
 			free_channel(copy, side);
 		}
 	} else {
-		while(rotations) {
+		while (rotations) {
 			uint_fast8_t **copy = alloc(side, side);
 
 			if (!copy) {
@@ -105,9 +105,9 @@ int exe_rotation(uint_fast8_t ***matrix, int angle_val, selected_area selected)
 					copy[i][j] = (*matrix)[i + selected.x1][j + selected.y1];
 
 			for (int i = selected.x1; i < selected.x2; i++)
-					for (int j = selected.y1; j < selected.y2; j++)
-						swap(&(*matrix)[i][j],
-							 &copy[j - selected.x1][selected.y2 - i - 1]);
+				for (int j = selected.y1; j < selected.y2; j++)
+					swap(&(*matrix)[i][j],
+						 &copy[j - selected.x1][selected.y2 - i - 1]);
 
 			rotations++;
 			free_channel(copy, side);
@@ -137,8 +137,7 @@ int rotate_select(image *img, int angle_val, selected_area selected)
 	case P6:
 		if (exe_rotation(&img->pixels.red, angle_val, selected) == ERROR ||
 			exe_rotation(&img->pixels.green, angle_val, selected) == ERROR ||
-			exe_rotation(&img->pixels.blue,
-				angle_val, selected) == ERROR)
+			exe_rotation(&img->pixels.blue, angle_val, selected) == ERROR)
 			return ERROR;
 		break;
 	default:
@@ -154,23 +153,23 @@ int rotate_all(image *img, int angle_val)
 	case P1:
 	case P4:
 		if (exe_rotation_all_bw(&img->pixels.bw, angle_val,
-								  &img->width, &img->height) == ERROR)
+								&img->width, &img->height) == ERROR)
 			return ERROR;
 		break;
 	case P2:
 	case P5:
 		if (exe_rotation_all(&img->pixels.gray, angle_val,
-							  &img->width, &img->height) == ERROR)
+							 &img->width, &img->height) == ERROR)
 			return ERROR;
 		break;
 	case P3:
 	case P6:
 		if (exe_rotation_all(&img->pixels.red, angle_val,
-							  &img->width, &img->height) == ERROR ||
+							 &img->width, &img->height) == ERROR ||
 			exe_rotation_all(&img->pixels.green, angle_val,
-							  &img->width, &img->height) == ERROR ||
+							 &img->width, &img->height) == ERROR ||
 			exe_rotation_all(&img->pixels.blue, angle_val,
-							  &img->width, &img->height) == ERROR)
+							 &img->width, &img->height) == ERROR)
 			return ERROR;
 		break;
 	default:
@@ -181,7 +180,7 @@ int rotate_all(image *img, int angle_val)
 }
 
 int exe_rotation_all(uint_fast8_t ***matrix, int angle_val,
-					  int *width, int *height)
+					 int *width, int *height)
 {
 	int rotations = angle_val / DEFAULT_ANGLE;
 	if (rotations >= 0) {
@@ -225,7 +224,7 @@ int exe_rotation_all(uint_fast8_t ***matrix, int angle_val,
 }
 
 int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
-						 int *width, int *height)
+						int *width, int *height)
 {
 	int rotations = angle_val / DEFAULT_ANGLE;
 

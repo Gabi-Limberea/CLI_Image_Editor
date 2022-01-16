@@ -41,7 +41,6 @@ int save_ascii(char *filename, image img)
 				break;
 			default:
 				return ERROR;
-				break;
 			}
 		}
 		fprintf(file, "\n");
@@ -87,7 +86,6 @@ int save_binary(char *filename, image img)
 				break;
 			default:
 				return ERROR;
-				break;
 			}
 		}
 	}

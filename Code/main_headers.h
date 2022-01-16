@@ -7,3 +7,5 @@
 #include "select.h"
 #include "save_image.h"
 #include "rotate_image.h"
+#include "crop_image.h"
+#include "apply_effects.h"

@@ -7,6 +7,7 @@
 #define ERROR -1
 #define SUCCESS 1
 #define SIZE sizeof(uint_fast8_t)
+#define SIZE_PTR sizeof(uint_fast8_t *)
 #define DEFAULT_ANGLE 90
 
 typedef enum comm {

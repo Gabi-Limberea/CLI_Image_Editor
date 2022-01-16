@@ -12,67 +12,30 @@ void clean_up(FILE *file, char *input)
 	fclose(file);
 }
 
-void parse_comments(FILE *file, char *input, image *img)
+magic chk_type(char *input)
 {
-	fgets(input, BUFSIZ, file);
-		while (input[0] == '#') {
-			img->start_line++;
-			fgets(input, BUFSIZ, file);
-		}
-		if (strchr(input, '\n'))
-			input[strlen(input) - 1] = '\0';
-}
-
-magic chk_type(char *filename, image *img, long *pos)
-{
-	FILE *file = fopen(filename, "r");
-	char *input = calloc(BUFSIZ, sizeof(char));
-
-	if (!input || !file) {
-		free(input);
-		return NO_TYPE;
-	}
-
-	parse_comments(file, input, img);
-
-	*pos = ftell(file);
-	if (strchr(input, '\n'))
-		input[strlen(input) - 1] = '\0';
-
-	if (!strcmp(input, "P1")) {
-		clean_up(file, input);
+	if (!strcmp(input, "P1"))
 		return P1;
-	}
 
-	if (!strcmp(input, "P2")) {
-		clean_up(file, input);
+	if (!strcmp(input, "P2"))
 		return P2;
-	}
 
-	if (!strcmp(input, "P3")) {
-		clean_up(file, input);
+	if (!strcmp(input, "P3"))
 		return P3;
-	}
 
-	if (!strcmp(input, "P4")) {
-		clean_up(file, input);
+	if (!strcmp(input, "P4"))
 		return P4;
-	}
 
-	if (!strcmp(input, "P5")) {
-		clean_up(file, input);
+	if (!strcmp(input, "P5"))
 		return P5;
-	}
-	if (!strcmp(input, "P6")) {
-		clean_up(file, input);
-		return P6;
-	}
 
-	clean_up(file, input);
+	if (!strcmp(input, "P6"))
+		return P6;
+
 	return NO_TYPE;
 }
 
-int get_size_max_value(char *filename, image *img, long *pos)
+int read_header(char *filename, image *img, long *pos)
 {
 	FILE *file = fopen(filename, "r");
 	char *input = calloc(BUFSIZ, sizeof(char));
@@ -83,34 +46,39 @@ int get_size_max_value(char *filename, image *img, long *pos)
 		return ERROR;
 	}
 
-	fseek(file, *pos, SEEK_SET);
-	for (int i = 0; i < DEFAULT - 1; i++) {
-		parse_comments(file, input, img);
+	for (int i = 0; i < img->start_line; i++) {
+		fscanf(file, "%s", input);
 
-		if (attributes < 2) {
-			char *token = strtok(input, " ");
-
-			while (token && attributes < 2) {
-				if (attributes == 0)
-					img->width = atoi(token);
-				else if (attributes == 1)
-					img->height = atoi(token);
-
-				token = strtok(NULL, " ");
+		if (input[0] == '#') {
+			fgets(input, BUFSIZ, file);
+			img->start_line++;
+		} else {
+			switch (attributes) {
+			case 0:
+				img->type = chk_type(input);
 				attributes++;
+				break;
+			case 1:
+				img->width = atoi(input);
+				attributes++;
+				break;
+			case 2:
+				img->height = atoi(input);
+				if (img->type != P1 || img->type != P4) {
+					attributes++;
+					img->start_line++;
+				}
+				break;
+			case 3:
+				img->max_value = atoi(input);
+				break;
+			default:
+				break;
 			}
 		}
 	}
 
-	if (img->type != P1 && img->type != P4) {
-		if (attributes == 2) {
-			img->max_value = atoi(input);
-			attributes++;
-		}
-		parse_comments(file, input, img);
-	}
-
-	*pos = ftell(file) - strlen(input) - 1;
+	*pos = ftell(file);
 	clean_up(file, input);
 	return SUCCESS;
 }
@@ -251,7 +219,7 @@ load_status read_binary(char *filename, image *img, long pos)
 		return NOT_LOADED;
 	}
 
-	fseek(file, pos, SEEK_SET);
+	fseek(file, pos + 1, SEEK_SET);
 	switch (img->type) {
 	case P4:
 		if (read_channel_mono_binary(file, img) == ERROR)
@@ -280,11 +248,10 @@ char *load_img(status *img_status, char *filename, image *img)
 	if (img_status->load == LOADED)
 		reset(img, img_status);
 
-	img->type = chk_type(filename, img, &pos);
-	if (img->type == NO_TYPE)
+	if (read_header(filename, img, &pos) == ERROR)
 		return LOAD_FAIL;
 
-	if (get_size_max_value(filename, img, &pos) == ERROR)
+	if (img->type == NO_TYPE)
 		return LOAD_FAIL;
 
 	if (img->type > P3)

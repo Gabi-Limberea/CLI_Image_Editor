@@ -6,10 +6,9 @@
 #include "bit_manipulation.h"
 #include "miscelanious_utils.h"
 
-void parse_comments(FILE *file, char *input, image *img);
 void clean_up(FILE *file, char *input);
-int get_size_max_value(char *filename, image *img, long *current_position);
-magic chk_type(char *filename, image *img, long *current_position);
+int read_header(char *filename, image *img, long *pos);
+magic chk_type(char *input);
 int read_channel_mono_ascii(FILE *file, image *img);
 int read_channel_rgb_ascii(FILE *file, image *img);
 load_status read_ascii(char *filename, image *img, long pos);

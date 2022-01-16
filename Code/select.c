@@ -5,6 +5,26 @@
 #include <stdint.h>
 
 #include "select.h"
+int chk_select(char **params, image *img)
+{
+	if (atoi(params[0]) > img->width || atoi(params[0]) < 0)
+		return ERROR;
+
+	if (atoi(params[1]) > img->height || atoi(params[1]) < 0)
+		return ERROR;
+
+	if (atoi(params[2]) > img->width || atoi(params[0]) < 0)
+		return ERROR;
+
+	if (atoi(params[3]) > img->height || atoi(params[0]) < 0)
+		return ERROR;
+
+	if (atoi(params[0]) == atoi(params[2]) ||
+		atoi(params[1]) == atoi(params[3]))
+		return ERROR;
+
+	return SUCCESS;
+}
 
 void select_area(status *img_status, char **params, int count,
 				 image *img, selected_area *selected)
@@ -19,12 +39,9 @@ void select_area(status *img_status, char **params, int count,
 		return;
 	}
 
-	for (int i = 0; i < count; i++) {
-		if (atoi(params[i]) > img->width ||
-			atoi(params[i]) > img->height || atoi(params[i]) < 0) {
-			printf(SELECT_ZONE_FAIL);
-			return;
-		}
+	if (chk_select(params, img) == ERROR) {
+		printf(SELECT_ZONE_FAIL);
+		return;
 	}
 
 	selected->x1 = atoi(params[0]);

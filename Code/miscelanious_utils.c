@@ -8,7 +8,7 @@
 
 uint_fast8_t **alloc(int width, int height)
 {
-	uint_fast8_t **matrix = calloc(height, sizeof(uint_fast8_t *));
+	uint_fast8_t **matrix = calloc(height, SIZE_PTR);
 	if (!matrix) {
 		free(matrix);
 		fprintf(stderr, ERROR_MESSAGE);
