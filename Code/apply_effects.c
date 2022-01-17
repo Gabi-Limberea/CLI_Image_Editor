@@ -101,8 +101,8 @@ void apply_effect(image *img, selected_area selected,
 	}
 }
 
-uint_fast8_t update_pixel(uint_fast8_t **matrix, int i, int j,
-						  const double kernel[DEFAULT][DEFAULT])
+double update_pixel(double **matrix, int i, int j,
+					const double kernel[DEFAULT][DEFAULT])
 {
 	double sum = 0;
 
@@ -110,5 +110,5 @@ uint_fast8_t update_pixel(uint_fast8_t **matrix, int i, int j,
 		for (int l = 0; l < DEFAULT; l++)
 			sum += (double)matrix[i - 1 + k][j - 1 + l] * kernel[k][l];
 
-	return (uint_fast8_t)round(sum);
+	return round(sum);
 }

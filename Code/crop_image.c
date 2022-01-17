@@ -12,7 +12,7 @@ int exe_crop_bw(uint_fast8_t ***matrix, selected_area *selected, int height)
 	int height_new = selected->y2 - selected->y1;
 	uint_fast8_t **copy = *matrix;
 
-	*matrix = alloc(width_new, height_new);
+	*matrix = alloc_bw(width_new, height_new);
 	if (!(*matrix))
 		return ERROR;
 
@@ -21,15 +21,15 @@ int exe_crop_bw(uint_fast8_t ***matrix, selected_area *selected, int height)
 			if (is_bit_set(copy, i, j))
 				set_bit(1, (*matrix), i - selected->y1, j - selected->x1);
 
-	free_channel(copy, height);
+	free_channel_bw(copy, height);
 	return SUCCESS;
 }
 
-int exe_crop(uint_fast8_t ***matrix, selected_area *selected, int height)
+int exe_crop(double ***matrix, selected_area *selected, int height)
 {
 	int width_new = selected->x2 - selected->x1;
 	int height_new = selected->y2 - selected->y1;
-	uint_fast8_t **copy = *matrix;
+	double **copy = *matrix;
 
 	*matrix = alloc(width_new, height_new);
 	if (!(*matrix))

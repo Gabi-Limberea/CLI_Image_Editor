@@ -7,9 +7,9 @@
 
 #include "miscelanious_utils.h"
 
-uint_fast8_t **alloc(int width, int height)
+double **alloc(int width, int height)
 {
-	uint_fast8_t **matrix = calloc(height, SIZE_PTR);
+	double **matrix = calloc(height, SIZE_PTR);
 	if (!matrix) {
 		free(matrix);
 		fprintf(stderr, ERROR_MESSAGE);
@@ -29,7 +29,36 @@ uint_fast8_t **alloc(int width, int height)
 	return matrix;
 }
 
-void free_channel(uint_fast8_t **matrix, int height)
+uint_fast8_t **alloc_bw(int width, int height)
+{
+	uint_fast8_t **matrix = calloc(height, SIZE_PTR_CHAR);
+	if (!matrix) {
+		free(matrix);
+		fprintf(stderr, ERROR_MESSAGE);
+		return NULL;
+	}
+
+	for (int i = 0; i < height; i++) {
+		matrix[i] = calloc(width, SIZE_CHAR);
+
+		if (!matrix[i]) {
+			free_channel_bw(matrix, i);
+			fprintf(stderr, ERROR_MESSAGE);
+			return NULL;
+		}
+	}
+
+	return matrix;
+}
+
+void free_channel(double **matrix, int height)
+{
+	for (int i = 0; i < height; i++)
+		free(matrix[i]);
+	free(matrix);
+}
+
+void free_channel_bw(uint_fast8_t **matrix, int height)
 {
 	for (int i = 0; i < height; i++)
 		free(matrix[i]);
@@ -39,7 +68,7 @@ void free_channel(uint_fast8_t **matrix, int height)
 void reset(image *img, status *img_status)
 {
 	if (img->type == P1 || img->type == P4) {
-		free_channel(img->pixels.bw, img->height);
+		free_channel_bw(img->pixels.bw, img->height);
 	} else if (img->type == P2 || img->type == P5) {
 		free_channel(img->pixels.gray, img->height);
 	} else if (img->type == P3 || img->type == P6) {
@@ -68,14 +97,14 @@ void swap_int(int *a, int *b)
 	*b = tmp;
 }
 
-void swap(uint_fast8_t *a, uint_fast8_t *b)
+void swap(double *a, double *b)
 {
-	uint_fast8_t tmp = *a;
+	double tmp = *a;
 	*a = *b;
 	*b = tmp;
 }
 
-void clamp(uint_fast8_t *x, int min, int max)
+void clamp(double *x, int min, int max)
 {
 	if (*x > max) {
 		*x = max;

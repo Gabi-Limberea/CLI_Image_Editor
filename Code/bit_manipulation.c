@@ -21,9 +21,9 @@ int is_bit_set(uint_fast8_t **bw, int i, int j)
 void set_bit_reversed(uint_fast8_t tmp, uint_fast8_t *bw)
 {
 	*bw = 0;
-	for (u_long i = 0; i < 8 * SIZE; i++)
+	for (u_long i = 0; i < 8 * SIZE_CHAR; i++)
 		if (tmp & (1 << i))
-			*bw |= 1 << (8 * SIZE - i - 1);
+			*bw |= 1 << (8 * SIZE_CHAR - i - 1);
 }
 
 void reset_bit(uint_fast8_t **bw, int i, int j)

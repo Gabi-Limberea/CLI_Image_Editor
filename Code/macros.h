@@ -6,8 +6,10 @@
 #define DEFAULT 3
 #define ERROR -1
 #define SUCCESS 1
-#define SIZE sizeof(uint_fast8_t)
-#define SIZE_PTR sizeof(uint_fast8_t *)
+#define SIZE sizeof(double)
+#define SIZE_PTR sizeof(double *)
+#define SIZE_CHAR sizeof(uint_fast8_t)
+#define SIZE_PTR_CHAR sizeof(uint_fast8_t *)
 #define DEFAULT_ANGLE 90
 
 typedef enum comm {
@@ -33,8 +35,8 @@ typedef struct img_status {
 
 typedef struct color_channels {
 	uint_fast8_t **bw;
-	uint_fast8_t **gray;
-	uint_fast8_t **red, **green, **blue;
+	double **gray;
+	double **red, **green, **blue;
 } channels;
 
 typedef struct image {

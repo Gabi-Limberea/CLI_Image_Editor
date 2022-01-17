@@ -86,7 +86,7 @@ int read_channel_mono_ascii(FILE *file, image *img)
 {
 	switch (img->type) {
 	case P1:
-		img->pixels.bw = alloc(img->width, img->height);
+		img->pixels.bw = alloc_bw(img->width, img->height);
 		for (int i = 0; i < img->height; i++) {
 			for (int j = 0; j < img->width; j++) {
 				int tmp = 0;
@@ -99,7 +99,7 @@ int read_channel_mono_ascii(FILE *file, image *img)
 		img->pixels.gray = alloc(img->width, img->height);
 		for (int i = 0; i < img->height; i++) {
 			for (int j = 0; j < img->width; j++)
-				fscanf(file, "%hhu", &img->pixels.gray[i][j]);
+				fscanf(file, "%lf", &img->pixels.gray[i][j]);
 		}
 		break;
 	default:
@@ -120,9 +120,9 @@ int read_channel_rgb_ascii(FILE *file, image *img)
 
 	for (int i = 0; i < img->height; i++) {
 		for (int j = 0; j < img->width; j++) {
-			fscanf(file, "%hhu", &img->pixels.red[i][j]);
-			fscanf(file, "%hhu", &img->pixels.green[i][j]);
-			fscanf(file, "%hhu", &img->pixels.blue[i][j]);
+			fscanf(file, "%lf", &img->pixels.red[i][j]);
+			fscanf(file, "%lf", &img->pixels.green[i][j]);
+			fscanf(file, "%lf", &img->pixels.blue[i][j]);
 		}
 	}
 
@@ -164,12 +164,12 @@ int read_channel_mono_binary(FILE *file, image *img)
 {
 	switch (img->type) {
 	case P4:
-		img->pixels.bw = alloc(img->width, img->height);
+		img->pixels.bw = alloc_bw(img->width, img->height);
 		for (int i = 0; i < img->height; i++) {
 			for (int j = 0; j < img->width; j++) {
 				if (j % 8 == 0) {
 					uint_fast8_t tmp;
-					fread(&tmp, SIZE, 1, file);
+					fread(&tmp, SIZE_CHAR, 1, file);
 					set_bit_reversed(tmp, &img->pixels.bw[i][j / 8]);
 				}
 			}
@@ -178,8 +178,11 @@ int read_channel_mono_binary(FILE *file, image *img)
 	case P5:
 		img->pixels.gray = alloc(img->width, img->height);
 		for (int i = 0; i < img->height; i++) {
-			for (int j = 0; j < img->width; j++)
-				fread(&img->pixels.gray[i][j], SIZE, 1, file);
+			for (int j = 0; j < img->width; j++) {
+				uint_fast8_t tmp;
+				fread(&tmp,  SIZE_CHAR, 1, file);
+				img->pixels.gray[i][j] = (double)tmp;
+			}
 		}
 		break;
 	default:
@@ -200,9 +203,13 @@ int read_channel_rgb_binary(FILE *file, image *img)
 
 	for (int i = 0; i < img->height; i++) {
 		for (int j = 0; j < img->width; j++) {
-			fread(&img->pixels.red[i][j], SIZE, 1, file);
-			fread(&img->pixels.green[i][j], SIZE, 1, file);
-			fread(&img->pixels.blue[i][j], SIZE, 1, file);
+			uint_fast8_t red, green, blue;
+			fread(&red, SIZE_CHAR, 1, file);
+			fread(&green, SIZE_CHAR, 1, file);
+			fread(&blue, SIZE_CHAR, 1, file);
+			img->pixels.red[i][j] = (double)red;
+			img->pixels.green[i][j] = (double)green;
+			img->pixels.blue[i][j] = (double)blue;
 		}
 	}
 

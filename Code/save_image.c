@@ -33,12 +33,12 @@ int save_ascii(char *filename, image img)
 					fprintf(file, "%u ", 0);
 				break;
 			case P2:
-				fprintf(file, "%u ", img.pixels.gray[i][j]);
+				fprintf(file, "%u ", (uint_fast8_t)img.pixels.gray[i][j]);
 				break;
 			case P3:
-				fprintf(file, "%u ", img.pixels.red[i][j]);
-				fprintf(file, "%u ", img.pixels.green[i][j]);
-				fprintf(file, "%u ", img.pixels.blue[i][j]);
+				fprintf(file, "%u ", (uint_fast8_t)img.pixels.red[i][j]);
+				fprintf(file, "%u ", (uint_fast8_t)img.pixels.green[i][j]);
+				fprintf(file, "%u ", (uint_fast8_t)img.pixels.blue[i][j]);
 				break;
 			default:
 				return ERROR;
@@ -54,6 +54,7 @@ int save_ascii(char *filename, image img)
 int save_binary(char *filename, image img)
 {
 	FILE *file = fopen(filename, "wb");
+	uint_fast8_t gray, red, green, blue;
 
 	if (!file)
 		return ERROR;
@@ -74,16 +75,20 @@ int save_binary(char *filename, image img)
 				if (j % 8 == 0) {
 					uint_fast8_t tmp;
 					set_bit_reversed(img.pixels.bw[i][j / 8], &tmp);
-					fwrite(&tmp, SIZE, 1, file);
+					fwrite(&tmp, SIZE_CHAR, 1, file);
 				}
 				break;
 			case P5:
-				fwrite(&img.pixels.gray[i][j], SIZE, 1, file);
+				gray = (uint_fast8_t)img.pixels.gray[i][j];
+				fwrite(&gray, SIZE_CHAR, 1, file);
 				break;
 			case P6:
-				fwrite(&img.pixels.red[i][j], SIZE, 1, file);
-				fwrite(&img.pixels.green[i][j], SIZE, 1, file);
-				fwrite(&img.pixels.blue[i][j], SIZE, 1, file);
+				red = (uint_fast8_t)img.pixels.red[i][j];
+				green = (uint_fast8_t)img.pixels.green[i][j];
+				blue = (uint_fast8_t)img.pixels.blue[i][j];
+				fwrite(&red, SIZE_CHAR, 1, file);
+				fwrite(&green, SIZE_CHAR, 1, file);
+				fwrite(&blue, SIZE_CHAR, 1, file);
 				break;
 			default:
 				return ERROR;

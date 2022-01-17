@@ -4,9 +4,11 @@
 #include "macros.h"
 #include "outputs.h"
 
-void free_channel(uint_fast8_t **matrix, int height);
-uint_fast8_t **alloc(int width, int height);
+void free_channel(double **matrix, int height);
+void free_channel_bw(uint_fast8_t **matrix, int height);
+double **alloc(int width, int height);
+uint_fast8_t **alloc_bw(int width, int height);
 void reset(image *img, status *img_status);
 void swap_int(int *a, int *b);
-void swap(uint_fast8_t *a, uint_fast8_t *b);
-void clamp(uint_fast8_t *x, int min, int max);
+void swap(double *a, double *b);
+void clamp(double *x, int min, int max);

@@ -14,10 +14,10 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 
 	if (angle_val >= 0) {
 		while (rotations) {
-			uint_fast8_t **copy = alloc(side, side);
+			uint_fast8_t **copy = alloc_bw(side, side);
 
 			if (!copy) {
-				free_channel(copy, side);
+				free_channel_bw(copy, side);
 				return ERROR;
 			}
 
@@ -34,14 +34,14 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 				}
 
 			rotations--;
-			free_channel(copy, side);
+			free_channel_bw(copy, side);
 		}
 	} else {
 		while (rotations) {
-			uint_fast8_t **copy = alloc(side, side);
+			uint_fast8_t **copy = alloc_bw(side, side);
 
 			if (!copy) {
-				free_channel(copy, side);
+				free_channel_bw(copy, side);
 				return ERROR;
 			}
 
@@ -58,21 +58,21 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 				}
 
 			rotations++;
-			free_channel(copy, side);
+			free_channel_bw(copy, side);
 		}
 	}
 
 	return SUCCESS;
 }
 
-int exe_rotation(uint_fast8_t ***matrix, int angle_val, selected_area selected)
+int exe_rotation(double ***matrix, int angle_val, selected_area selected)
 {
 	int side = selected.x2 - selected.x1;
 	int rotations = angle_val / DEFAULT_ANGLE;
 
 	if (angle_val >= 0) {
 		while (rotations) {
-			uint_fast8_t **copy = alloc(side, side);
+			double **copy = alloc(side, side);
 
 			if (!copy) {
 				free_channel(copy, side);
@@ -93,7 +93,7 @@ int exe_rotation(uint_fast8_t ***matrix, int angle_val, selected_area selected)
 		}
 	} else {
 		while (rotations) {
-			uint_fast8_t **copy = alloc(side, side);
+			double **copy = alloc(side, side);
 
 			if (!copy) {
 				free_channel(copy, side);
@@ -190,13 +190,13 @@ int rotate_all(image *img, int angle_val)
 	return SUCCESS;
 }
 
-int exe_rotation_all(uint_fast8_t ***matrix, int angle_val,
+int exe_rotation_all(double ***matrix, int angle_val,
 					 int *width, int *height)
 {
 	int rotations = angle_val / DEFAULT_ANGLE;
 	if (rotations >= 0) {
 		while (rotations) {
-			uint_fast8_t **copy = *matrix;
+			double **copy = *matrix;
 			int width_new = *height, height_new = *width;
 
 			*matrix = alloc(width_new, height_new);
@@ -214,7 +214,7 @@ int exe_rotation_all(uint_fast8_t ***matrix, int angle_val,
 		}
 	} else {
 		while (rotations) {
-			uint_fast8_t **copy = *matrix;
+			double **copy = *matrix;
 			int width_new = *height, height_new = *width;
 
 			*matrix = alloc(width_new, height_new);
@@ -244,7 +244,7 @@ int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 			uint_fast8_t **copy = *matrix;
 			int width_new = *height, height_new = *width;
 
-			*matrix = alloc(width_new, height_new);
+			*matrix = alloc_bw(width_new, height_new);
 			if (!(*matrix))
 				return ERROR;
 
@@ -255,7 +255,7 @@ int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 				}
 			}
 
-			free_channel(copy, *height);
+			free_channel_bw(copy, *height);
 			rotations--;
 			*width = width_new;
 			*height = height_new;
@@ -265,7 +265,7 @@ int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 			uint_fast8_t **copy = *matrix;
 			int width_new = *height, height_new = *width;
 
-			*matrix = alloc(width_new, height_new);
+			*matrix = alloc_bw(width_new, height_new);
 			if (!(*matrix))
 				return ERROR;
 
@@ -276,7 +276,7 @@ int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 				}
 			}
 
-			free_channel(copy, *height);
+			free_channel_bw(copy, *height);
 			rotations++;
 			*width = width_new;
 			*height = height_new;
