@@ -3,13 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "bit_manipulation.h"
 
 void set_bit(int tmp, uint_fast8_t **bw, int i, int j)
 {
 	if (tmp)
-		bw[i][j / 8] = bw[i][j / 8] | (1 << (j % 8));
+		bw[i][j / 8] |= (1 << (j % 8));
 }
 
 int is_bit_set(uint_fast8_t **bw, int i, int j)
@@ -28,5 +29,5 @@ void set_bit_reversed(uint_fast8_t tmp, uint_fast8_t *bw)
 void reset_bit(uint_fast8_t **bw, int i, int j)
 {
 	if (bw[i][j / 8] & (1 << (j % 8)))
-		bw[i][j / 8] = bw[i][j / 8] ^ (1 << (j % 8));
+		bw[i][j / 8] ^= (1 << (j % 8));
 }

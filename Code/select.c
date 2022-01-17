@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "select.h"
 int chk_select(char **params, image *img)
@@ -58,7 +59,11 @@ void select_area(status *img_status, char **params, int count,
 	if (selected->y1 > selected->y2)
 		swap_int(&selected->y1, &selected->y2);
 
-	img_status->selection = SELECTED;
+	if (selected->x1 == 0 && selected->x2 == img->width &&
+		selected->y1 == 0 && selected->y2 == img->height)
+		img_status->selection = SELECTED_ALL;
+	else
+		img_status->selection = SELECTED;
 }
 
 void select_all(status *img_status, image *img, selected_area *selected)

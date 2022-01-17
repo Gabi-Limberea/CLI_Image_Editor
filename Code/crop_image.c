@@ -79,6 +79,10 @@ void crop(image *img, selected_area *selected, status *img_status)
 
 	img->width = selected->x2 - selected->x1;
 	img->height = selected->y2 - selected->y1;
+	selected->x1 = 0;
+	selected->x2 = img->width;
+	selected->y1 = 0;
+	selected->y2 = img->height;
 	img_status->selection = SELECTED_ALL;
 	printf(CROP_OK);
 }

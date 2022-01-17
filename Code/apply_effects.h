@@ -8,4 +8,8 @@
 
 effects chk_effect(char *param);
 void apply(image *img, status img_status, char *param, selected_area selected);
+void apply_effect(image *img, selected_area selected,
+				  const double kernel[DEFAULT][DEFAULT]);
+uint_fast8_t update_pixel(uint_fast8_t **matrix, int i, int j,
+						  const double kernel[DEFAULT][DEFAULT]);
 

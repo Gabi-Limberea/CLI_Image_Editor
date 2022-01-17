@@ -9,3 +9,4 @@ uint_fast8_t **alloc(int width, int height);
 void reset(image *img, status *img_status);
 void swap_int(int *a, int *b);
 void swap(uint_fast8_t *a, uint_fast8_t *b);
+void clamp(uint_fast8_t *x, int min, int max);

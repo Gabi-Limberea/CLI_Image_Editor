@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "miscelanious_utils.h"
 
@@ -72,4 +73,17 @@ void swap(uint_fast8_t *a, uint_fast8_t *b)
 	uint_fast8_t tmp = *a;
 	*a = *b;
 	*b = tmp;
+}
+
+void clamp(uint_fast8_t *x, int min, int max)
+{
+	if (*x > max) {
+		*x = max;
+		return;
+	}
+
+	if (*x < min) {
+		*x = min;
+		return;
+	}
 }

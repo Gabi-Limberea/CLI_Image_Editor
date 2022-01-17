@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "load_image.h"
 
@@ -35,23 +36,21 @@ magic chk_type(char *input)
 	return NO_TYPE;
 }
 
-int read_header(char *filename, image *img, long *pos)
+int read_header(char *filename, image *img, fpos_t *pos)
 {
 	FILE *file = fopen(filename, "r");
 	char *input = calloc(BUFSIZ, sizeof(char));
-	int attributes = 0;
+	int attributes = 0, keywords = DEFAULT + 1;
 
-	if (!file || !input) {
-		fprintf(stderr, ERROR_MESSAGE);
+	if (!file || !input)
 		return ERROR;
-	}
 
-	for (int i = 0; i < img->start_line; i++) {
+	for (int i = 0; i < keywords; i++) {
 		fscanf(file, "%s", input);
 
 		if (input[0] == '#') {
 			fgets(input, BUFSIZ, file);
-			img->start_line++;
+			keywords++;
 		} else {
 			switch (attributes) {
 			case 0:
@@ -64,10 +63,10 @@ int read_header(char *filename, image *img, long *pos)
 				break;
 			case 2:
 				img->height = atoi(input);
-				if (img->type != P1 || img->type != P4) {
+				if (img->type == P1 || img->type == P4)
+					keywords--;
+				else
 					attributes++;
-					img->start_line++;
-				}
 				break;
 			case 3:
 				img->max_value = atoi(input);
@@ -78,7 +77,7 @@ int read_header(char *filename, image *img, long *pos)
 		}
 	}
 
-	*pos = ftell(file);
+	fgetpos(file, pos);
 	clean_up(file, input);
 	return SUCCESS;
 }
@@ -90,7 +89,7 @@ int read_channel_mono_ascii(FILE *file, image *img)
 		img->pixels.bw = alloc(img->width, img->height);
 		for (int i = 0; i < img->height; i++) {
 			for (int j = 0; j < img->width; j++) {
-				int tmp;
+				int tmp = 0;
 				fscanf(file, "%d", &tmp);
 				set_bit(tmp, img->pixels.bw, i, j);
 			}
@@ -130,7 +129,7 @@ int read_channel_rgb_ascii(FILE *file, image *img)
 	return SUCCESS;
 }
 
-load_status read_ascii(char *filename, image *img, long pos)
+load_status read_ascii(char *filename, image *img, fpos_t *pos)
 {
 	FILE *file = fopen(filename, "r");
 
@@ -139,7 +138,7 @@ load_status read_ascii(char *filename, image *img, long pos)
 		return NOT_LOADED;
 	}
 
-	fseek(file, pos, SEEK_SET);
+	fsetpos(file, pos);
 	switch (img->type) {
 	case P1:
 		if (read_channel_mono_ascii(file, img) == ERROR)
@@ -210,7 +209,7 @@ int read_channel_rgb_binary(FILE *file, image *img)
 	return SUCCESS;
 }
 
-load_status read_binary(char *filename, image *img, long pos)
+load_status read_binary(char *filename, image *img, fpos_t *pos)
 {
 	FILE *file = fopen(filename, "rb");
 
@@ -219,17 +218,19 @@ load_status read_binary(char *filename, image *img, long pos)
 		return NOT_LOADED;
 	}
 
-	fseek(file, pos + 1, SEEK_SET);
+	fsetpos(file, pos);
 	switch (img->type) {
 	case P4:
 		if (read_channel_mono_binary(file, img) == ERROR)
 			return NOT_LOADED;
 		break;
 	case P5:
+		fseek(file, 1, SEEK_CUR);
 		if (read_channel_mono_binary(file, img) == ERROR)
 			return NOT_LOADED;
 		break;
 	case P6:
+		fseek(file, 1, SEEK_CUR);
 		if (read_channel_rgb_binary(file, img) == ERROR)
 			return NOT_LOADED;
 		break;
@@ -243,7 +244,7 @@ load_status read_binary(char *filename, image *img, long pos)
 
 char *load_img(status *img_status, char *filename, image *img)
 {
-	long pos = 0;
+	fpos_t pos = {};
 
 	if (img_status->load == LOADED)
 		reset(img, img_status);
@@ -255,9 +256,9 @@ char *load_img(status *img_status, char *filename, image *img)
 		return LOAD_FAIL;
 
 	if (img->type > P3)
-		img_status->load = read_binary(filename, img, pos);
+		img_status->load = read_binary(filename, img, &pos);
 	else
-		img_status->load = read_ascii(filename, img, pos);
+		img_status->load = read_ascii(filename, img, &pos);
 
 	if (img_status->load == LOADED) {
 		img_status->selection = SELECTED_ALL;
