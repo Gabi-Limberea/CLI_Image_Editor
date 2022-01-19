@@ -7,7 +7,7 @@
 #include "miscelanious_utils.h"
 
 void rotate(status * img_status, char *angle, image * img,
-			selected_area * selected);
+			selected_area * selected, int count);
 int rotate_all(image *img, int angle_val);
 int rotate_select(image *img, int angle_val, selected_area selected);
 int exe_rotation(double ***matrix, int angle_val,

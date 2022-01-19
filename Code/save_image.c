@@ -36,9 +36,12 @@ int save_ascii(char *filename, image img)
 				fprintf(file, "%u ", (uint_fast8_t)img.pixels.gray[i][j]);
 				break;
 			case P3:
-				fprintf(file, "%u ", (uint_fast8_t)img.pixels.red[i][j]);
-				fprintf(file, "%u ", (uint_fast8_t)img.pixels.green[i][j]);
-				fprintf(file, "%u ", (uint_fast8_t)img.pixels.blue[i][j]);
+				fprintf(file, "%u ",
+						(uint_fast8_t)round(img.pixels.red[i][j]));
+				fprintf(file, "%u ",
+						(uint_fast8_t)round(img.pixels.green[i][j]));
+				fprintf(file, "%u ",
+						(uint_fast8_t)round(img.pixels.blue[i][j]));
 				break;
 			default:
 				return ERROR;
@@ -83,9 +86,9 @@ int save_binary(char *filename, image img)
 				fwrite(&gray, SIZE_CHAR, 1, file);
 				break;
 			case P6:
-				red = (uint_fast8_t)img.pixels.red[i][j];
-				green = (uint_fast8_t)img.pixels.green[i][j];
-				blue = (uint_fast8_t)img.pixels.blue[i][j];
+				red = (uint_fast8_t)round(img.pixels.red[i][j]);
+				green = (uint_fast8_t)round(img.pixels.green[i][j]);
+				blue = (uint_fast8_t)round(img.pixels.blue[i][j]);
 				fwrite(&red, SIZE_CHAR, 1, file);
 				fwrite(&green, SIZE_CHAR, 1, file);
 				fwrite(&blue, SIZE_CHAR, 1, file);
@@ -102,6 +105,11 @@ int save_binary(char *filename, image img)
 
 void save_img(status img_status, char **params, image img, int count)
 {
+	if (!params[0]) {
+		printf(INVALID);
+		return;
+	}
+
 	if (img_status.load == NOT_LOADED) {
 		printf(NO_IMG);
 		return;

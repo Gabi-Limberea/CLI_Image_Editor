@@ -6,6 +6,7 @@
 #include <math.h>
 
 #include "select.h"
+
 int chk_select(char **params, image *img)
 {
 	if (atoi(params[0]) > img->width || atoi(params[0]) < 0)
@@ -27,6 +28,29 @@ int chk_select(char **params, image *img)
 	return SUCCESS;
 }
 
+int chk_digits(char **params)
+{
+	for (int i = 0; i < PARAMETERS_MAX; i++) {
+		if (params[i][0] == '-') {
+			int j = 1;
+			while (params[i][j]) {
+				if (params[i][j] < '0' || params[i][j] > '9')
+					return ERROR;
+				j++;
+			}
+		} else {
+			int j = 0;
+			while (params[i][j]) {
+				if (params[i][j] < '0' || params[i][j] > '9')
+					return ERROR;
+				j++;
+			}
+		}
+	}
+
+	return SUCCESS;
+}
+
 void select_area(status *img_status, char **params, int count,
 				 image *img, selected_area *selected)
 {
@@ -36,7 +60,12 @@ void select_area(status *img_status, char **params, int count,
 	}
 
 	if (count < PARAMETERS_MAX) {
-		printf(SELECT_ZONE_FAIL);
+		printf(INVALID);
+		return;
+	}
+
+	if (chk_digits(params) == ERROR) {
+		printf(INVALID);
 		return;
 	}
 
@@ -50,9 +79,6 @@ void select_area(status *img_status, char **params, int count,
 	selected->x2 = atoi(params[2]);
 	selected->y2 = atoi(params[3]);
 
-	printf(SELECT_ZONE_OK, selected->x1, selected->y1,
-		   selected->x2, selected->y2);
-
 	if (selected->x1 > selected->x2)
 		swap_int(&selected->x1, &selected->x2);
 
@@ -64,6 +90,9 @@ void select_area(status *img_status, char **params, int count,
 		img_status->selection = SELECTED_ALL;
 	else
 		img_status->selection = SELECTED;
+
+	printf(SELECT_ZONE_OK, selected->x1, selected->y1,
+		   selected->x2, selected->y2);
 }
 
 void select_all(status *img_status, image *img, selected_area *selected)

@@ -42,8 +42,10 @@ int read_header(char *filename, image *img, fpos_t *pos)
 	char *input = calloc(BUFSIZ, sizeof(char));
 	int attributes = 0, keywords = DEFAULT + 1;
 
-	if (!file || !input)
+	if (!file || !input) {
+		free(input);
 		return ERROR;
+	}
 
 	for (int i = 0; i < keywords; i++) {
 		fscanf(file, "%s", input);
@@ -249,9 +251,13 @@ load_status read_binary(char *filename, image *img, fpos_t *pos)
 	return LOADED;
 }
 
-char *load_img(status *img_status, char *filename, image *img)
+char *load_img(status *img_status, char *filename, image *img,
+			   selected_area *selected)
 {
 	fpos_t pos = {};
+
+	if (!filename)
+		return INVALID;
 
 	if (img_status->load == LOADED)
 		reset(img, img_status);
@@ -269,6 +275,10 @@ char *load_img(status *img_status, char *filename, image *img)
 
 	if (img_status->load == LOADED) {
 		img_status->selection = SELECTED_ALL;
+		selected->x1 = 0;
+		selected->x2 = img->width;
+		selected->y1 = 0;
+		selected->y2 = img->height;
 		return LOAD_OK;
 	}
 

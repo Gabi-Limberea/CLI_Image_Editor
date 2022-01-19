@@ -29,7 +29,8 @@ int main(void)
 
 		switch (command) {
 		case LOAD:
-			printf(load_img(&img_status, params[0], &img), params[0]);
+			printf(load_img(&img_status, params[0], &img, &selected),
+				   params[0]);
 			break;
 
 		case SELECT:
@@ -41,7 +42,7 @@ int main(void)
 			break;
 
 		case ROTATE:
-			rotate(&img_status, params[0], &img, &selected);
+			rotate(&img_status, params[0], &img, &selected, count);
 			break;
 
 		case CROP:
@@ -49,7 +50,7 @@ int main(void)
 			break;
 
 		case APPLY:
-			apply(&img, img_status, params[0], selected);
+			apply(&img, img_status, params[0], selected, count);
 			break;
 
 		case SAVE:
@@ -94,26 +95,26 @@ comm chk_command(char *input, char **params, int *count)
 		dummy = strtok(NULL, " ");
 	}
 
-	if (!strcmp(command, "LOAD") && *count != 0)
+	if (!strcmp(command, "LOAD"))
 		return LOAD;
 
-	if (!strcmp(command, "SELECT") && *count != 0) {
+	if (!strcmp(command, "SELECT")) {
 		if (!strcmp(params[0], "ALL"))
 			return SELECT_ALL;
 		else
 			return SELECT;
 	}
 
-	if (!strcmp(command, "ROTATE") && *count != 0)
+	if (!strcmp(command, "ROTATE"))
 		return ROTATE;
 
-	if (!strcmp(command, "CROP") && *count == 0)
+	if (!strcmp(command, "CROP"))
 		return CROP;
 
-	if (!strcmp(command, "APPLY") && *count != 0)
+	if (!strcmp(command, "APPLY"))
 		return APPLY;
 
-	if (!strcmp(command, "SAVE") && *count != 0)
+	if (!strcmp(command, "SAVE"))
 		return SAVE;
 
 	if (!strcmp(command, "EXIT"))

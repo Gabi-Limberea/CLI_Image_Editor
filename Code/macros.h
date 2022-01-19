@@ -53,18 +53,22 @@ typedef enum effects {
 	INVALID_EFFECT = -1, EDGE, SHARPEN, BLUR, GAUSSIAN_BLUR
 } effects;
 
-static const double edge[DEFAULT][DEFAULT] = {{-1, -1, -1},
-											  {-1, 8, -1},
-											  {-1, -1, -1}};
+static const double edge[DEFAULT][DEFAULT] = {
+	{-1.0, -1.0, -1.0},
+	{-1.0, 8.0, -1.0},
+	{-1.0, -1.0, -1.0}};
 
-static const double sharpen[DEFAULT][DEFAULT] = {{0, -1, 0},
-												 {-1, 5, -1},
-												 {0, -1, 0}};
+static const double sharpen[DEFAULT][DEFAULT] = {
+	{0.0, -1.0, 0.0},
+	{-1.0, 5.0, -1.0},
+	{0.0, -1.0, 0.0}};
 
-static const double blur[DEFAULT][DEFAULT] = {{1 / 9, 1 / 9, 1 / 9},
-											  {1 / 9, 1 / 9, 1 / 9},
-											  {1 / 9, 1 / 9, 1 / 9}};
+static const double blur[DEFAULT][DEFAULT] = {
+	{1.0 / 9, 1.0 / 9, 1.0 / 9},
+	{1.0 / 9, 1.0 / 9, 1.0 / 9},
+	{1.0 / 9, 1.0 / 9, 1.0 / 9}};
 
-static const double gauss_blur[DEFAULT][DEFAULT] = {{1 / 16, 1 / 8, 1 / 16},
-													{1 / 8, 1 / 4, 1 / 8},
-													{1 / 16, 1 / 8, 1 / 16}};
+static const double gauss_blur[DEFAULT][DEFAULT] = {
+	{1.0 / 16, 1.0 / 8, 1.0 / 16},
+	{1.0 / 8, 1.0 / 4, 1.0 / 8},
+	{1.0 / 16, 1.0 / 8, 1.0 / 16}};

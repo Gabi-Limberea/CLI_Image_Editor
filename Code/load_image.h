@@ -15,4 +15,5 @@ load_status read_ascii(char *filename, image *img, fpos_t *pos);
 int read_channel_mono_binary(FILE *file, image *img);
 int read_channel_rgb_binary(FILE *file, image *img);
 load_status read_binary(char *filename, image *img, fpos_t *pos);
-char *load_img(status *img_status, char *filename, image *img);
+char *load_img(status *img_status, char *filename, image *img,
+			   selected_area *selected);

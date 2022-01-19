@@ -28,9 +28,9 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 
 			for (int i = 0; i < side; i++)
 				for (int j = 0; j < side; j++) {
-					reset_bit(*matrix, i, j);
-					if (is_bit_set(copy, selected.x2 - j - 1, i - selected.y1))
-						set_bit(1, *matrix, i, j);
+					reset_bit(*matrix, i + selected.y1, j + selected.x1);
+					if (is_bit_set(copy, side - j - 1, i))
+						set_bit(1, *matrix, i + selected.y1, j + selected.x1);
 				}
 
 			rotations--;
@@ -52,9 +52,9 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 
 			for (int i = 0; i < side; i++)
 				for (int j = 0; j < side; j++) {
-					reset_bit(*matrix, i, j);
-					if (is_bit_set(copy, j - selected.x1, selected.y2 - i - 1))
-						set_bit(1, *matrix, i, j);
+					reset_bit(*matrix, i + selected.y1, selected.x1);
+					if (is_bit_set(copy, j, side - i - 1))
+						set_bit(1, *matrix, i + selected.y1, j + selected.x1);
 				}
 
 			rotations++;
@@ -85,7 +85,7 @@ int exe_rotation(double ***matrix, int angle_val, selected_area selected)
 
 			for (int i = 0; i < side; i++)
 				for (int j = 0; j < side; j++)
-					swap(&(*matrix)[i][j],
+					swap(&(*matrix)[i + selected.y1][j + selected.x1],
 						 &copy[side - j - 1][i]);
 
 			rotations--;
@@ -286,10 +286,15 @@ int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 }
 
 void rotate(status *img_status, char *angle, image *img,
-			selected_area *selected)
+			selected_area *selected, int count)
 {
 	if (img_status->load == NOT_LOADED) {
 		printf(NO_IMG);
+		return;
+	}
+
+	if (count == 0) {
+		printf(INVALID);
 		return;
 	}
 

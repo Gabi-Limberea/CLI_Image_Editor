@@ -29,6 +29,22 @@ double **alloc(int width, int height)
 	return matrix;
 }
 
+double **copy_channel(double **matrix, int width, int height)
+{
+	double **copy = alloc(width, height);
+
+	if (!copy) {
+		free(copy);
+		return NULL;
+	}
+
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
+			copy[i][j] = matrix[i][j];
+
+	return copy;
+}
+
 uint_fast8_t **alloc_bw(int width, int height)
 {
 	uint_fast8_t **matrix = calloc(height, SIZE_PTR_CHAR);
@@ -107,12 +123,12 @@ void swap(double *a, double *b)
 void clamp(double *x, int min, int max)
 {
 	if (*x > max) {
-		*x = max;
+		*x = (double)max;
 		return;
 	}
 
 	if (*x < min) {
-		*x = min;
+		*x = (double)min;
 		return;
 	}
 }
