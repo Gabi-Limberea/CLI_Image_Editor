@@ -26,5 +26,4 @@ void chk_borders(selected_area *selected, int width, int height);
 double update_pixel(double **matrix, int i, int j,
 					const double kernel[DEFAULT][DEFAULT]);
 
-
 #endif

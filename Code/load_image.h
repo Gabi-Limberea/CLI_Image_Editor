@@ -38,6 +38,6 @@ int read_channel_mono_binary(FILE *file, image *img);
 int read_channel_rgb_binary(FILE *file, image *img);
 
 // Function to free the input and close the opened file
-void clean_up(FILE * file, char *input);
+void clean_up(FILE *file, char *input);
 
 #endif

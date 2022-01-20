@@ -9,8 +9,8 @@
 
 // Main function for the rotate command
 // Check command validity and how the image will be rotated
-void rotate(status * img_status, char *angle, image * img,
-			selected_area * selected, int count);
+void rotate(status *img_status, char *angle, image *img,
+			selected_area *selected, int count);
 
 // Determine which channel will be rotated
 int rotate_all(image *img, int angle_val);
@@ -30,7 +30,6 @@ int rotate_select(image *img, int angle_val, selected_area selected);
 // Rotate the selection for the black & white channel
 int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 					selected_area selected);
-
 
 // Rotate the selection for any other channel
 int exe_rotation(double ***matrix, int angle_val,

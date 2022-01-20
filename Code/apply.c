@@ -111,7 +111,6 @@ void apply_filter(image *img, selected_area selected,
 	free_channel(blue, img->height);
 }
 
-
 void chk_borders(selected_area *selected, int width, int height)
 {
 	if (selected->x1 == 0)
