@@ -1,9 +1,11 @@
 // Copyright 2021 - 2022: Limberea Gabriela 312CA
-#pragma once
 
 #include "macros.h"
 #include "bit_manipulation.h"
 #include "miscelanious_utils.h"
+
+#ifndef __rotate__
+#define __rotate__
 
 void rotate(status * img_status, char *angle, image * img,
 			selected_area * selected, int count);
@@ -17,3 +19,5 @@ int exe_rotation_all(double ***matrix, int angle_val,
 					 int *width, int *height);
 int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 						int *width, int *height);
+
+#endif

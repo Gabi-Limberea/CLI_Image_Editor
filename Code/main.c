@@ -18,6 +18,13 @@ int main(void)
 	image img = {0, 0, 0, DEFAULT, {NULL}, NO_TYPE};
 	selected_area selected = {0, 0, 0, 0};
 
+	if (!input || !params) {
+		free(input);
+		free(params);
+		fprintf(stderr, ERROR_MESSAGE);
+		abort();
+	}
+
 	while (command != EXIT) {
 		int count = 0;
 

@@ -1,5 +1,7 @@
 // Copyright 2021 - 2022: Limberea Gabriela 312CA
-#pragma once
+
+#ifndef __macros__
+#define __macros__
 
 #define NO_IMG "No image loaded\n"
 #define LOAD_OK "Loaded %s\n"
@@ -89,3 +91,5 @@ static const double gauss_blur[DEFAULT][DEFAULT] = {
 	{1.0 / 16, 1.0 / 8, 1.0 / 16},
 	{1.0 / 8, 1.0 / 4, 1.0 / 8},
 	{1.0 / 16, 1.0 / 8, 1.0 / 16}};
+
+#endif
