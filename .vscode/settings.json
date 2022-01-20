@@ -1,9 +1,0 @@
-{
-	"files.associations": {
-		"stdio.h": "c",
-		"macros.h": "c",
-		"string.h": "c",
-		"type_traits": "c",
-		"outputs.h": "c"
-	}
-}
