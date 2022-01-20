@@ -6,8 +6,6 @@
 
 #include "rotate.h"
 
-// Main function for the rotate command
-// Check command validity and how the image will be rotated
 void rotate(status *img_status, char *angle, image *img,
 			selected_area *selected, int count)
 {
@@ -54,7 +52,6 @@ void rotate(status *img_status, char *angle, image *img,
 	printf(ROTATE_FAIL_SQUARE);
 }
 
-// Determine which channel will be rotated
 int rotate_all(image *img, int angle_val)
 {
 	int old_width = img->width, old_height = img->height;
@@ -99,7 +96,6 @@ int rotate_all(image *img, int angle_val)
 	return SUCCESS;
 }
 
-// Rotate the whole black & white channel
 int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 						int *width, int *height)
 {
@@ -144,7 +140,6 @@ int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 	return SUCCESS;
 }
 
-// Rotate any other channel
 int exe_rotation_all(double ***matrix, int angle_val,
 					 int *width, int *height)
 {
@@ -182,8 +177,6 @@ int exe_rotation_all(double ***matrix, int angle_val,
 	return SUCCESS;
 }
 
-// Check that the selection is square and determine which
-// channel will be rotated
 int rotate_select(image *img, int angle_val, selected_area selected)
 {
 	if (selected.x2 - selected.x1 != selected.y2 - selected.y1)
@@ -214,7 +207,6 @@ int rotate_select(image *img, int angle_val, selected_area selected)
 	return SUCCESS;
 }
 
-// Rotate the selection for the black & white channel
 int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 					selected_area selected)
 {
@@ -269,7 +261,6 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 	return SUCCESS;
 }
 
-// Rotate the selection for any other channel
 int exe_rotation(double ***matrix, int angle_val, selected_area selected)
 {
 	int side = selected.x2 - selected.x1;

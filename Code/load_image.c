@@ -7,9 +7,6 @@
 
 #include "load_image.h"
 
-// Main function for the load command
-// Check if the given filename is valid, read the header and
-// determine the image type
 void load_img(status *img_status, char *filename, image *img,
 			  selected_area *selected)
 {
@@ -59,7 +56,6 @@ void load_img(status *img_status, char *filename, image *img,
 	printf(LOAD_FAIL, filename);
 }
 
-// Read the header
 int read_header(char *filename, image *img, fpos_t *pos)
 {
 	FILE *file = fopen(filename, "r");
@@ -114,7 +110,6 @@ int read_header(char *filename, image *img, fpos_t *pos)
 	return SUCCESS;
 }
 
-// Determine the image format
 magic chk_type(char *input)
 {
 	if (!strcmp(input, "P1"))
@@ -138,7 +133,6 @@ magic chk_type(char *input)
 	return NO_TYPE;
 }
 
-// Choose which color channel will be loaded for an ascii picture
 load_status read_ascii(char *filename, image *img, fpos_t *pos)
 {
 	FILE *file = fopen(filename, "r");
@@ -173,7 +167,6 @@ load_status read_ascii(char *filename, image *img, fpos_t *pos)
 	return LOADED;
 }
 
-// Alloc and read one of the monochrome channels in ascii
 int read_channel_mono_ascii(FILE *file, image *img)
 {
 	switch (img->type) {
@@ -218,7 +211,6 @@ int read_channel_mono_ascii(FILE *file, image *img)
 	return SUCCESS;
 }
 
-// Alloc and read the RGB channels in ascii
 int read_channel_rgb_ascii(FILE *file, image *img)
 {
 	img->pixels.red = alloc(img->width, img->height);
@@ -244,7 +236,6 @@ int read_channel_rgb_ascii(FILE *file, image *img)
 	return SUCCESS;
 }
 
-// Choose which color channel will be loaded for a binary picture
 load_status read_binary(char *filename, image *img, fpos_t *pos)
 {
 	FILE *file = fopen(filename, "rb");
@@ -279,7 +270,6 @@ load_status read_binary(char *filename, image *img, fpos_t *pos)
 	return LOADED;
 }
 
-// Alloc and read one of the monochrome channels in binary
 int read_channel_mono_binary(FILE *file, image *img)
 {
 	switch (img->type) {
@@ -331,7 +321,6 @@ int read_channel_mono_binary(FILE *file, image *img)
 	return SUCCESS;
 }
 
-// Alloc and read the RGB channels in binary
 int read_channel_rgb_binary(FILE *file, image *img)
 {
 	img->pixels.red = alloc(img->width, img->height);
@@ -363,7 +352,6 @@ int read_channel_rgb_binary(FILE *file, image *img)
 	return SUCCESS;
 }
 
-// Function to free the input and close the opened file
 void clean_up(FILE *file, char *input)
 {
 	free(input);

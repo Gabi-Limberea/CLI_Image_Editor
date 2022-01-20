@@ -7,7 +7,6 @@
 
 #include "select.h"
 
-// Select the whole image
 void select_all(status *img_status, image *img, selected_area *selected)
 {
 	// Check if an image is loaded
@@ -24,7 +23,6 @@ void select_all(status *img_status, image *img, selected_area *selected)
 	printf(SELECT_ALL_OK);
 }
 
-// Select the area determined by the given coordinates
 void select_area(status *img_status, char **params, int count,
 				 image *img, selected_area *selected)
 {
@@ -74,7 +72,6 @@ void select_area(status *img_status, char **params, int count,
 		   selected->x2, selected->y2);
 }
 
-// Check if the selection coordinates are valid
 int chk_select(char **params, image *img)
 {
 	if (atoi(params[0]) > img->width || atoi(params[0]) < 0)
@@ -96,7 +93,6 @@ int chk_select(char **params, image *img)
 	return SUCCESS;
 }
 
-// Check if the parameters are numbers
 int chk_digits(char **params)
 {
 	for (int i = 0; i < PARAMETERS_MAX; i++) {

@@ -6,8 +6,6 @@
 
 #include "crop.h"
 
-// Main function for the crop command
-// Check the type of image loaded and how it needs to be cropped
 void crop(image *img, selected_area *selected, status *img_status)
 {
 	// Check if an image is loaded
@@ -58,7 +56,6 @@ void crop(image *img, selected_area *selected, status *img_status)
 	printf(CROP_OK);
 }
 
-// Crop the black & white, bit based channel
 int exe_crop_bw(uint_fast8_t ***matrix, selected_area *selected, int height)
 {
 	int width_new = selected->x2 - selected->x1;
@@ -80,7 +77,6 @@ int exe_crop_bw(uint_fast8_t ***matrix, selected_area *selected, int height)
 	return SUCCESS;
 }
 
-// Crops all other image formats (grayscale and RGB)
 int exe_crop(double ***matrix, selected_area *selected, int height)
 {
 	int width_new = selected->x2 - selected->x1;

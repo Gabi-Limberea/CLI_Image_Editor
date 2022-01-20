@@ -7,8 +7,6 @@
 
 #include "save_image.h"
 
-// Main function for the save command.
-// Check validity of command and decide how to save the file
 void save_img(status img_status, char **params, image img, int count)
 {
 	// Check if the first parameter is valid (the filename)
@@ -39,7 +37,6 @@ void save_img(status img_status, char **params, image img, int count)
 		printf(SAVE_OK, params[0]);
 }
 
-// Save image as an ascii file
 int save_ascii(char *filename, image img)
 {
 	FILE *file = fopen(filename, "w");
@@ -92,7 +89,6 @@ int save_ascii(char *filename, image img)
 	return SAVE;
 }
 
-// Save image as a binary file
 int save_binary(char *filename, image img)
 {
 	FILE *file = fopen(filename, "wb");
