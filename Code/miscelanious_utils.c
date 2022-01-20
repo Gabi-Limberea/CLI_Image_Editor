@@ -7,6 +7,7 @@
 
 #include "miscelanious_utils.h"
 
+// Alloc a color channel (except the black & white)
 double **alloc(int width, int height)
 {
 	double **matrix = calloc(height, SIZE_PTR);
@@ -29,6 +30,7 @@ double **alloc(int width, int height)
 	return matrix;
 }
 
+// Copy a color channel
 double **copy_channel(double **matrix, int width, int height)
 {
 	double **copy = alloc(width, height);
@@ -45,6 +47,7 @@ double **copy_channel(double **matrix, int width, int height)
 	return copy;
 }
 
+// Alloc the black & white channel
 uint_fast8_t **alloc_bw(int width, int height)
 {
 	uint_fast8_t **matrix = calloc(height, SIZE_PTR_CHAR);
@@ -67,6 +70,7 @@ uint_fast8_t **alloc_bw(int width, int height)
 	return matrix;
 }
 
+// Free a color channel (except the black & white)
 void free_channel(double **matrix, int height)
 {
 	for (int i = 0; i < height; i++)
@@ -74,6 +78,7 @@ void free_channel(double **matrix, int height)
 	free(matrix);
 }
 
+// Free the black & white channel
 void free_channel_bw(uint_fast8_t **matrix, int height)
 {
 	for (int i = 0; i < height; i++)
@@ -81,6 +86,8 @@ void free_channel_bw(uint_fast8_t **matrix, int height)
 	free(matrix);
 }
 
+// Reset all the channels and image info to default,
+// as if no image has ever been loaded
 void reset(image *img, status *img_status)
 {
 	if (img->type == P1 || img->type == P4) {
@@ -106,6 +113,7 @@ void reset(image *img, status *img_status)
 	img_status->selection = NOTHING_SELECTED;
 }
 
+// Swap 2 ints
 void swap_int(int *a, int *b)
 {
 	int tmp = *a;
@@ -113,6 +121,7 @@ void swap_int(int *a, int *b)
 	*b = tmp;
 }
 
+// Swap 2 doubles
 void swap(double *a, double *b)
 {
 	double tmp = *a;
@@ -120,6 +129,7 @@ void swap(double *a, double *b)
 	*b = tmp;
 }
 
+// Clamp a double value between the min and max values
 void clamp(double *x, int min, int max)
 {
 	if (*x > max) {

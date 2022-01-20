@@ -2,7 +2,6 @@
 #pragma once
 
 #include "macros.h"
-#include "outputs.h"
 #include "bit_manipulation.h"
 
 void save_img(status img_status, char **params, image img, int count);

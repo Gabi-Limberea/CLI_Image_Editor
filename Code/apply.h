@@ -2,14 +2,13 @@
 #pragma once
 
 #include "macros.h"
-#include "outputs.h"
 #include "bit_manipulation.h"
 #include "miscelanious_utils.h"
 
-effects chk_effect(char *param);
+filters chk_filter(char *param);
 void apply(image *img, status img_status, char *param,
 		   selected_area selected, int count);
-void apply_effect(image *img, selected_area selected,
+void apply_filter(image *img, selected_area selected,
 				  const double kernel[DEFAULT][DEFAULT]);
 double update_pixel(double **matrix, int i, int j,
 					const double kernel[DEFAULT][DEFAULT]);

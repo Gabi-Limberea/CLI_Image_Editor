@@ -2,7 +2,6 @@
 #pragma once
 
 #include "macros.h"
-#include "outputs.h"
 
 void free_channel(double **matrix, int height);
 void free_channel_bw(uint_fast8_t **matrix, int height);

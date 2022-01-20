@@ -2,7 +2,6 @@
 #pragma once
 
 #include "macros.h"
-#include "outputs.h"
 #include "miscelanious_utils.h"
 
 int chk_select(char **params, image * img);

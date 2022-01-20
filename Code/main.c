@@ -22,15 +22,17 @@ int main(void)
 		int count = 0;
 
 		fgets(input, BUFSIZ, stdin);
+
+		// Ignore if input is just a '\n'
 		while (!strcmp(input, "\n"))
 			fgets(input, BUFSIZ, stdin);
 
+		// Get the command, parameters and the number of parameters given
 		command = chk_command(input, params, &count);
 
 		switch (command) {
 		case LOAD:
-			printf(load_img(&img_status, params[0], &img, &selected),
-				   params[0]);
+			load_img(&img_status, params[0], &img, &selected);
 			break;
 
 		case SELECT:
@@ -75,14 +77,17 @@ int main(void)
 	return 0;
 }
 
+// Check the input and get the command, its parameters and how many they are
 comm chk_command(char *input, char **params, int *count)
 {
 	char *dummy = strchr(input, '\n');
 	char *command = NULL;
 
+	// Replace the '\n' at the end of the input if needed
 	if (dummy)
 		*dummy = '\0';
 
+	// Parse through the input and separate the command from the parameters
 	dummy = strtok(input, " ");
 	while (dummy && *count < PARAMETERS_MAX) {
 		if (!command) {
@@ -118,7 +123,9 @@ comm chk_command(char *input, char **params, int *count)
 		return SAVE;
 
 	if (!strcmp(command, "EXIT"))
-		return -1; //EXIT, checker is a bitch
+		// CS checker was being fussy (?).
+		// It was supposed to be "return EXIT;"
+		return -1;
 
 	return NOTHING;
 }

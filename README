@@ -1,1 +1,174 @@
 # Copyright 2021 - 2022: Limberea Gabriela 312CAa
+
+Homework #3: Image editor
+
+DISCLAIMER: I implemented all three image formats (P1/P4, P2/P5, P3/P6).
+I noticed that only the last two had to be implemented after I had finished
+the LOAD and ROTATE commands for all three formats and I was too lazy to remove
+it. All commands work with a P1/P4 image input too.
+
+Main code file -> main.c
+The main() function: basically a switch case inside a while loop
+	The loop keeps going as long as the command is not "EXIT". Each switch case
+calls the appropriate command-equivalent function, which is implemented in its
+own header file. When the input is "EXIT", case EXIT is executed, the loop is 
+over and the program is done.
+
+chk_command() function:
+- take the user input
+- take a vector of strings where the command parameters will be stored
+- take a counter for the number of parameters
+- separate the user input into separate strings
+- the first string is the command and the rest its parameters
+- test if the command matches any of the given options:
+	* if it does, return it
+	* if it does not, return INVALID
+
+-> main_headers:
+	- the custom-made headers used in main
+
+-------------------------------------------------------------------------------
+
+Auxiliary code files/headers:
+-> macros:
+	- definitions of typedef structs, typedef enums, macros and static consts
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-> miscelanious_utils: functions used in multiple code files
+	- alloc(): alloc a color channel (except the black & white)
+
+	- alloc_bw(): alloc the black & white channel
+
+	- copy_channel(): copy a color channel
+
+	- free_channel(): free a color channel (except the black & white)
+
+	- free_channel_bw(): free the black & white channel
+
+	- reset(): reset all the color channels and image info to default
+
+	- swap_int(): swap 2 ints
+
+	- swap(): swap 2 doubles
+
+	- clam(): clamp a double value between a min and a max value
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-> bit_manipulation: bit based functions
+	- set_bit(): sets a bit at a given index
+
+	- is_bit_set(): check if a given bit is set
+
+	- set_bits_reversed(): take a binary input and save it reversed
+
+	- reset_bit(): reset a bit to 0
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-> load_image:
+FUNCTION USED IN main.c:
+	- load_img():
+		* check if the given filename is valid, read the header and determine
+		the image type
+		* decide how the image needs to be read
+
+FUNCTIONS ONLY USED LOCALLY:
+	- read_header():
+		* parse through the header and save the necessary info for the image
+		format, skipping comments
+		* save the position of the cursor in the file
+
+	- chk_type(): determine the image format
+
+	- read_ascii(): choose which color channel will be loaded for an ASCII
+	image
+
+	- read_channel_mono_ascii(): alloc and read one of the monochrome channels
+	(grayscale or black & white) in ASCII
+
+	- read_channel_rgb_ascii(): alloc and read the RGB channels in ASCII
+
+	- read_binary(): choose which color channel will be loaded for a binary
+	image
+
+	- read_channel_mono_binary(): alloc and read one of the monochrome channels (grayscale or black & white) in binary
+
+	- read_channel_rgb_binary(): alloc and read the RGB channels in binary
+
+	- clean_up(): free the input and close the opened file
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-> select:
+FUNCTIONS USED IN main.c:
+	- select_all(): select the whole image
+
+	- select_area(): select the area determined by the given coordinates if
+	they are valid
+
+FUNCTIONS USED LOCALLY:
+	- chk_select(): check if the selection coordinates are valid
+
+	- chk_digits(): check if the command parmeters are numbers
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-> rotate:
+FUNCTION USED IN main.c:
+	- rotate(): check command validity and how the image will be rotated
+
+FUNCTIONS USED LOCALLY:
+	- rotate_all(): determine which channel will be rotated when the whole image is	selected
+
+	- exe_rotation_all_bw(): execute the rotation on the whole black & white,
+	bit based channel
+
+	- exe_rotation_all(): execute the rotation on any other channel
+
+	- rotate_select(): check if the selection is square and determine which channel will be rotated
+
+	- exe_rotation_bw(): rotate the selection for the black & white, bit based
+	channel
+
+	- exe_rotation(): rotate the selection for any other channel
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-> crop:
+FUNCTION USED IN main.c:
+	- crop(): check the type of image loaded and how it needs to be cropped
+
+FUNCTIONS USED LOCALLY:
+	- exe_crop_bw():
+		* crop the black & white, bit based channel
+
+	- exe_crop():
+		* crop all other image formats (grayscale and RGB)
+
+-> apply:
+FUNCTION USED IN main.c:
+	- apply(): check command validity and decide which filter is applied
+
+FUNCTIONS USED LOCALLY:
+	- chk_filter(): check if the given filter is available
+
+	- apply_filter(): apply the filter to the image
+
+	- chk_borders(): check if the selection is within the borders of the image
+
+	- update_pixel(): apply the kernel to a pixel
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-> save_image:
+FUNCTION USED IN main.c:
+	- save_img(): check validity of command and decide how to save the picture
+
+FUNCTIONS USED LOCALLY:
+	- save_ascii(): save image as an ascii file
+
+	- save binary(): save image as a binary file
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
