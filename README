@@ -1,11 +1,8 @@
 # Copyright 2021 - 2022: Limberea Gabriela 312CAa
 
-Homework #3: Image editor
+CLI Image editor
 
-DISCLAIMER: I implemented all three image formats (P1/P4, P2/P5, P3/P6).
-I noticed that only the last two had to be implemented after I had finished
-the LOAD and ROTATE commands for all three formats and I was too lazy to remove
-it. All commands work with a P1/P4 image input too.
+DISCLAIMER: Supports all ppm/pgm image formats
 
 Main code file -> main.c
 The main() function: basically a switch case inside a while loop
