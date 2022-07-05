@@ -30,6 +30,12 @@ void swap_int(int *a, int *b);
 // Swap 2 doubles
 void swap(double *a, double *b);
 
+// Swap 2 double pointers
+void swap_double_ptr(double ***a, double ***b);
+
+// Swap 2 uint pointers
+void swap_uint_ptr(uint_fast8_t ***a, uint_fast8_t ***b);
+
 // Clamp a double value between the min and max values
 void clamp(double *x, int min, int max);
 

@@ -101,22 +101,24 @@ int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 {
 	int rotations = angle_val / DEFAULT_ANGLE;
 
+	if (rotations % 4 == 0)
+		return SUCCESS;
+
 	// For each rotation, create a copy of the original channel
 	// and alloc a new matrix for the original one. Use the copy as a
 	// reference for rotating the image
 	while (rotations) {
-		uint_fast8_t **copy = *matrix;
 		int width_new = *height, height_new = *width;
+		uint_fast8_t **copy = alloc_bw(width_new, height_new);
 
-		*matrix = alloc_bw(width_new, height_new);
-		if (!(*matrix))
+		if (!copy)
 			return ERROR;
 
 		if (angle_val > 0) {
 			for (int i = 0; i < height_new; i++) {
 				for (int j = 0; j < width_new; j++) {
-					if (is_bit_set(copy, *height - j - 1, i))
-						set_bit(1, *matrix, i, j);
+					if (is_bit_set(*matrix, *height - j - 1, i))
+						set_bit(1, copy, i, j);
 				}
 			}
 
@@ -124,14 +126,15 @@ int exe_rotation_all_bw(uint_fast8_t ***matrix, int angle_val,
 		} else {
 			for (int i = 0; i < height_new; i++) {
 				for (int j = 0; j < width_new; j++) {
-					if (is_bit_set(copy, j, *width - i - 1))
-						set_bit(1, *matrix, i, j);
+					if (is_bit_set(*matrix, j, *width - i - 1))
+						set_bit(1, copy, i, j);
 				}
 			}
 
 			rotations++;
 		}
 
+		swap_uint_ptr(matrix, &copy);
 		free_channel_bw(copy, *height);
 		*width = width_new;
 		*height = height_new;
@@ -145,30 +148,34 @@ int exe_rotation_all(double ***matrix, int angle_val,
 {
 	int rotations = angle_val / DEFAULT_ANGLE;
 
+	if (rotations % 4 == 0)
+		return SUCCESS;
+
 	// For each rotation, create a copy of the original channel
 	// and alloc a new matrix for the original one. Use the copy as a
 	// reference for rotating the image
 	while (rotations) {
-		double **copy = *matrix;
 		int width_new = *height, height_new = *width;
+		double **copy = alloc(width_new, height_new);
 
-		*matrix = alloc(width_new, height_new);
-		if (!(*matrix))
+		if (!copy)
 			return ERROR;
 
 		if (angle_val > 0) {
 			for (int i = 0; i < height_new; i++)
 				for (int j = 0; j < width_new; j++)
-					(*matrix)[i][j] = copy[*height - j - 1][i];
+					copy[i][j] = (*matrix)[*height - j - 1][i];
 
 			rotations--;
 		} else {
 			for (int i = 0; i < height_new; i++)
 				for (int j = 0; j < width_new; j++)
-					(*matrix)[i][j] = copy[j][*width - i - 1];
+					copy[i][j] = (*matrix)[j][*width - i - 1];
 
 			rotations++;
 		}
+
+			swap_double_ptr(matrix, &copy);
 			free_channel(copy, *height);
 			*width = width_new;
 			*height = height_new;
@@ -212,6 +219,9 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 {
 	int side = selected.x2 - selected.x1;
 	int rotations = angle_val / DEFAULT_ANGLE;
+
+	if (rotations % 4 == 0)
+		return SUCCESS;
 
 	// For each rotation, create a copy of the original selection.
 	// Use the copy as a reference for rotating the selected area
@@ -263,40 +273,32 @@ int exe_rotation_bw(uint_fast8_t ***matrix, int angle_val,
 
 int exe_rotation(double ***matrix, int angle_val, selected_area selected)
 {
-	int side = selected.x2 - selected.x1;
 	int rotations = angle_val / DEFAULT_ANGLE;
 
-	// For each rotation, create a copy of the original selection.
-	// Use the copy as a reference for rotating the selected area
+	if (rotations % 4 == 0)
+		return SUCCESS;
+
+	// For each rotation, rotate the selection in place.
 	while (rotations) {
-		double **copy = alloc(side, side);
-
-		if (!copy) {
-			free_channel(copy, side);
-			return ERROR;
-		}
-
-		for (int i = 0; i < side; i++)
-			for (int j = 0; j < side; j++)
-				copy[i][j] = (*matrix)[i + selected.y1][j + selected.x1];
+		for (int i = selected.x1; i < selected.x2; i++)
+			for (int j = selected.y1; j < i; j++)
+				swap(&(*matrix)[i][j], &(*matrix)[j][i]);
 
 		if (angle_val > 0) {
-			for (int i = 0; i < side; i++)
-				for (int j = 0; j < side; j++)
-					swap(&(*matrix)[i + selected.y1][j + selected.x1],
-						 &copy[side - j - 1][i]);
+			for (int i = selected.x1; i < selected.x2; i++)
+				for (int j = selected.y1; j < selected.y2 / 2; j++)
+					swap(&(*matrix)[i][j],
+						 &(*matrix)[i][selected.y2 - j - 1]);
 
 			rotations--;
 		} else {
-			for (int i = 0; i < side; i++)
-				for (int j = 0; j < side; j++)
-					swap(&(*matrix)[i + selected.y1][j + selected.x1],
-						 &copy[j][side - i - 1]);
+			for (int i = selected.x1; i < selected.x2 / 2; i++)
+				for (int j = selected.y1; j < selected.y2; j++)
+					swap(&(*matrix)[i][j],
+						 &(*matrix)[selected.x2 - i - 1][j]);
 
 			rotations++;
 		}
-
-		free_channel(copy, side);
 	}
 
 	return SUCCESS;

@@ -120,6 +120,20 @@ void swap(double *a, double *b)
 	*b = tmp;
 }
 
+void swap_double_ptr(double ***a, double ***b)
+{
+	double **tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+void swap_uint_ptr(uint_fast8_t ***a, uint_fast8_t ***b)
+{
+	uint_fast8_t **tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
 void clamp(double *x, int min, int max)
 {
 	if (*x > max) {
